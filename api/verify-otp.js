@@ -4,8 +4,11 @@ import axios from "axios";
 const app = express();
 app.use(express.json());
 
-const API_KEY = '29da840b-9d49-11f0-b922-0200cd936042'; // keep secret in Vercel env
+const API_KEY = '29da840b-9d49-11f0-b922-0200cd936042'; // keep git secret in Vercel env
 
+app.get("/", (req, res) => {
+  res.send("OTP Verification API is running");
+});
 // Verify OTP
 app.post("/", async (req, res) => {
   try {
