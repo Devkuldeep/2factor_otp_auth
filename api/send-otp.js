@@ -1,25 +1,28 @@
-import express from "express";
 import axios from "axios";
 
-const app = express();
-app.use(express.json());
+export default async function handler(req, res) {
+  // Health check for GET requests
+  if (req.method === "GET") {
+    return res.status(200).json({ status: "✅ Send OTP API is alive" });
+  }
 
-const API_KEY = '29da840b-9d49-11f0-b922-0200cd936042'; // keep secret in Vercel env
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method Not Allowed" });
+  }
 
-// Send OTP
-app.post("/", async (req, res) => {
+  const { phone } = req.body;
+  if (!phone) {
+    return res.status(400).json({ error: "Phone number required" });
+  }
+
   try {
-    const { phone } = req.body;
-    if (!phone) return res.status(400).json({ error: "Phone number required" });
-
+    const API_KEY ='29da840b-9d49-11f0-b922-0200cd936042';
     const url = `https://2factor.in/API/V1/${API_KEY}/SMS/${phone}/AUTOGEN`;
-    const response = await axios.get(url);
 
-    return res.json(response.data);
+    const response = await axios.get(url);
+    return res.status(200).json(response.data);
   } catch (error) {
-    console.error(error.response?.data || error.message);
+    console.error("Send OTP failed:", error.response?.data || error.message);
     return res.status(500).json({ error: "Failed to send OTP" });
   }
-});
-
-export default app;
+}
