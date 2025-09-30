@@ -17,7 +17,7 @@ export default async function handler(req, res) {
 
   try {
     const API_KEY ='29da840b-9d49-11f0-b922-0200cd936042';
-    const url = `https://2factor.in/API/V1/${API_KEY}/SMS/${phone}/AUTOGEN`;
+    const url = `https://2factor.in/API/V1/29da840b-9d49-11f0-b922-0200cd936042/SMS/916268363536/AUTOGEN`;
 
     const response = await axios.get(url);
     return res.status(200).json(response.data);
